@@ -1,0 +1,214 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  user-select: none;
+}
+
+body {
+  background: url("https://img.freepik.com/premium-photo/unraveling-artistry-background-image-flappy-bird-s-stylistic-appeal-game-design-secre_983420-24408.jpg?w=1060");
+  background-repeat: no-repeat;
+  background-size: cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  /* background: linear-gradient(135deg, #1a1c20 0%, #2c3e50 100%); */
+}
+
+.game-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.control-panel {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 800px;
+  background: rgba(16, 54, 94, 0.8);
+  padding: 15px;
+  border-radius: 10px;
+  color: white;
+}
+
+.stats {
+  display: flex;
+  gap: 20px;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.stat-value {
+  font-size: 24px;
+  font-weight: bold;
+  color: #e1dfdf;
+}
+
+.stat-label {
+  font-size: 12px;
+  color: #8c9eac;
+}
+
+.game-controls {
+  display: flex;
+  gap: 10px;
+}
+
+.control-btn {
+  padding: 8px 15px;
+  border: none;
+  border-radius: 5px;
+  background: #4dc1f9;
+  color: white;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.control-btn:hover {
+  background: #3aa8e0;
+  transform: translateY(-2px);
+}
+
+.game-container {
+  width: 800px;
+  height: 600px;
+  background: linear-gradient(180deg, #4dc1f9 0%, #73d6fd 100%);
+  border-radius: 15px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+#bird {
+  position: absolute;
+  width: 34px;
+  height: 24px;
+  background: #ffd542;
+  border-radius: 50% 50% 25% 25%;
+  transition: transform 0.1s;
+  margin-left: 50px;
+}
+
+#bird::before {
+  content: "";
+  position: absolute;
+  top: 8px;
+  right: -4px;
+  width: 12px;
+  height: 8px;
+  background: #ff9c42;
+  border-radius: 50%;
+}
+
+#bird::after {
+  content: "";
+  position: absolute;
+  top: 6px;
+  right: 4px;
+  width: 5px;
+  height: 5px;
+  background: #000;
+  border-radius: 50%;
+}
+
+.pipe {
+  position: absolute;
+  width: 60px;
+  background: linear-gradient(90deg, #2ecc71 0%, #27ae60 100%);
+  border: 2px solid rgba(0, 0, 0, 0.1);
+}
+
+.pipe-top {
+  border-bottom: none;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
+.pipe-bottom {
+  border-top: none;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+#ground {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 100px;
+  background: linear-gradient(90deg, #8b6b61 0%, #795548 100%);
+}
+
+.screen {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(5px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  gap: 20px;
+}
+
+.screen h1 {
+  font-size: 48px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  margin-bottom: 10px;
+}
+
+.score {
+  position: absolute;
+  top: 20px;
+  width: 100%;
+  text-align: center;
+  font-size: 48px;
+  font-weight: bold;
+  color: white;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  z-index: 10;
+}
+
+.speed-control {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+
+.speed-value {
+  min-width: 30px;
+  text-align: center;
+}
+
+.message {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 24px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.message.show {
+  opacity: 1;
+}
