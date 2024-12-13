@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>TypeMaster Pro</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      :root {
+        --primary: #2563eb;
+        --primary-dark: #1d4ed8;
+        --success: #16a34a;
+        --error: #dc2626;
+        --background: #f8fafc;
+        --card-bg: #ffffff;
+        --text: #1e293b;
+        --text-secondary: #64748b;
+        --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1),
+          0 2px 4px -2px rgb(0 0 0 / 0.1);
+      }
+
+      [data-theme="dark"] {
+        --background: #0f172a;
+        --card-bg: #1e293b;
+        --text: #f1f5f9;
+        --text-secondary: #94a3b8;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+      }
+
+      body {
+        background: url("https://wallpapers.com/images/featured/computer-keyboard-rw8hd3o6xuqcynlx.jpg");
+        background-repeat: no-repeat;
+        background-size: cover;
+        /* background: var(--background); */
+        color: var(--text);
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        transition: background-color 0.3s, color 0.3s;
+      }
+
+      .header {
+        background: var(--card-bg);
+        padding: 1.5rem;
+        box-shadow: var(--shadow);
+        margin-bottom: 2rem;
+      }
+
+      .container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 0 1.5rem;
+        width: 100%;
+      }
+
+      .header-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--primary);
+      }
+
+      .theme-toggle {
+        background: none;
+        border: none;
+        color: var(--text);
+        font-size: 1.5rem;
+        cursor: pointer;
+        padding: 0.75rem;
+        border-radius: 0.5rem;
+        transition: all 0.2s;
+      }
+
+      .theme-toggle:hover {
+        background: var(--background);
+      }
+
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+        margin-bottom: 2rem;
+      }
+
+      .stat-card {
+        background: var(--card-bg);
+        padding: 1.5rem;
+        border-radius: 1rem;
+        box-shadow: var(--shadow);
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        transition: transform 0.2s;
+      }
+
+      .stat-card:hover {
+        transform: translateY(-2px);
+      }
+
+      .stat-icon {
+        font-size: 1.5rem;
+        color: var(--primary);
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--background);
+        border-radius: 0.75rem;
+      }
+
+      .stat-content span {
+        display: block;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--text);
+      }
+
+      .stat-content label {
+        color: var(--text-secondary);
+        font-size: 0.875rem;
+      }
+
+      .game-card {
+        background: var(--card-bg);
+        padding: 2rem;
+        border-radius: 1rem;
+        box-shadow: var(--shadow);
+      }
+
+      .text-display {
+        font-size: 1.25rem;
+        line-height: 1.8;
+        margin-bottom: 2rem;
+        padding: 1.5rem;
+        background: var(--background);
+        border-radius: 0.75rem;
+        min-height: 120px;
+      }
+
+      .correct {
+        color: var(--success);
+      }
+      .incorrect {
+        color: var(--error);
+        text-decoration: underline wavy var(--error);
+      }
+      .current {
+        background: rgba(37, 99, 235, 0.1);
+        border-radius: 0.25rem;
+        padding: 0 0.25rem;
+      }
+
+      #textInput {
+        width: 100%;
+        padding: 1rem;
+        font-size: 1.125rem;
+        background: var(--background);
+        border: 2px solid transparent;
+        border-radius: 0.75rem;
+        color: var(--text);
+        margin-bottom: 1.5rem;
+        transition: all 0.2s;
+      }
+
+      #textInput:focus {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+      }
+
+      .button {
+        padding: 0.75rem 1.5rem;
+        font-size: 1rem;
+        font-weight: 600;
+        border: none;
+        border-radius: 0.75rem;
+        background: var(--primary);
+        color: white;
+        cursor: pointer;
+        transition: all 0.2s;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .button:hover {
+        background: var(--primary-dark);
+        transform: translateY(-2px);
+      }
+
+      .completion-message {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: var(--success);
+        color: white;
+        padding: 2rem 3rem;
+        border-radius: 1rem;
+        text-align: center;
+        box-shadow: var(--shadow);
+        animation: slideUp 0.3s ease-out;
+      }
+
+      .completion-stats {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2rem;
+        margin-top: 1.5rem;
+      }
+
+      @keyframes slideUp {
+        from {
+          transform: translate(-50%, 20px);
+          opacity: 0;
+        }
+        to {
+          transform: translate(-50%, -50%);
+          opacity: 1;
+        }
+      }
+
+      @media (max-width: 640px) {
+        .stats-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .text-display {
+          font-size: 1.125rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="header">
+      <div class="container header-content">
+        <div class="logo">
+          <i class="fas fa-keyboard"></i>
+          TypeMaster Pro
+        </div>
+        <button class="theme-toggle" onclick="toggleTheme()">
+          <i class="fas fa-moon"></i>
+        </button>
+      </div>
+    </header>
+
+    <main class="container">
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon">
+            <i class="fas fa-tachometer-alt"></i>
+          </div>
+          <div class="stat-content">
+            <span id="wpm">0</span>
+            <label>Words per minute</label>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">
+            <i class="fas fa-bullseye"></i>
+          </div>
+          <div class="stat-content">
+            <span id="accuracy">100</span>
+            <label>Accuracy %</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="game-card">
+        <div class="text-display" id="textDisplay"></div>
+        <input
+          type="text"
+          id="textInput"
+          autocomplete="off"
+          placeholder="Start typing..."
+        />
+        <button class="button" onclick="restart()">
+          <i class="fas fa-redo"></i>
+          Restart
+        </button>
+      </div>
+    </main>
+
+    <script>
+      const textDisplay = document.getElementById("textDisplay");
+      const textInput = document.getElementById("textInput");
+      const wpmDisplay = document.getElementById("wpm");
+      const accuracyDisplay = document.getElementById("accuracy");
+
+      const texts = [
+        "The quick brown fox jumps over the lazy dog.",
+        "Success is not final, failure is not fatal: it is the courage to continue that counts.",
+        "The only way to do great work is to love what you do.",
+        "Programming is the art of telling another human what one wants the computer to do.",
+      ];
+
+      let currentText = "";
+      let startTime = null;
+      let mistakes = 0;
+
+      function init() {
+        currentText = texts[Math.floor(Math.random() * texts.length)];
+        textDisplay.innerHTML = currentText;
+        textInput.value = "";
+        startTime = null;
+        mistakes = 0;
+        updateStats();
+      }
+
+      function updateDisplay(typed) {
+        let displayText = "";
+        for (let i = 0; i < currentText.length; i++) {
+          if (i < typed.length) {
+            if (typed[i] === currentText[i]) {
+              displayText += `<span class="correct">${currentText[i]}</span>`;
+            } else {
+              displayText += `<span class="incorrect">${currentText[i]}</span>`;
+            }
+          } else if (i === typed.length) {
+            displayText += `<span class="current">${currentText[i]}</span>`;
+          } else {
+            displayText += currentText[i];
+          }
+        }
+        textDisplay.innerHTML = displayText;
+      }
+
+      function calculateWPM() {
+        if (!startTime) return 0;
+        const timeElapsed = (Date.now() - startTime) / 1000 / 60;
+        const wordsTyped = textInput.value.length / 5;
+        return Math.round(wordsTyped / timeElapsed);
+      }
+
+      function calculateAccuracy() {
+        if (textInput.value.length === 0) return 100;
+        let mistakes = 0;
+        const typed = textInput.value;
+        for (let i = 0; i < typed.length; i++) {
+          if (typed[i] !== currentText[i]) mistakes++;
+        }
+        return Math.round(((typed.length - mistakes) / typed.length) * 100);
+      }
+
+      function updateStats() {
+        wpmDisplay.textContent = calculateWPM();
+        accuracyDisplay.textContent = calculateAccuracy();
+      }
+
+      function showCompletion() {
+        const message = document.createElement("div");
+        message.className = "completion-message";
+        message.innerHTML = `
+                <h2>Great job!</h2>
+                <div class="completion-stats">
+                    <div>
+                        <h3>${calculateWPM()}</h3>
+                        <p>WPM</p>
+                    </div>
+                    <div>
+                        <h3>${calculateAccuracy()}%</h3>
+                        <p>Accuracy</p>
+                    </div>
+                </div>
+            `;
+        document.body.appendChild(message);
+
+        setTimeout(() => {
+          message.remove();
+          init();
+          textInput.disabled = false;
+          textInput.focus();
+        }, 2000);
+      }
+
+      textInput.addEventListener("input", () => {
+        if (!startTime && textInput.value.length > 0) {
+          startTime = Date.now();
+        }
+
+        updateDisplay(textInput.value);
+        updateStats();
+
+        if (textInput.value.length >= currentText.length) {
+          textInput.disabled = true;
+          showCompletion();
+        }
+      });
+
+      function restart() {
+        init();
+        textInput.disabled = false;
+        textInput.focus();
+      }
+
+      function toggleTheme() {
+        document.body.dataset.theme =
+          document.body.dataset.theme === "dark" ? "light" : "dark";
+        const icon = document.querySelector(".theme-toggle i");
+        icon.className =
+          document.body.dataset.theme === "dark" ? "fas fa-sun" : "fas fa-moon";
+      }
+
+      // Initialize the game
+      init();
+    </script>
+  </body>
+</html>
